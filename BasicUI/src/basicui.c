@@ -4,6 +4,9 @@ typedef struct appdata {
 	Evas_Object *win;
 	Evas_Object *conform;
 	Evas_Object *label;
+	Evas_Object *box;
+	Evas_Object *list;
+	Evas_Object *button;
 } appdata_s;
 
 static void
@@ -48,14 +51,24 @@ create_base_gui(appdata_s *ad)
 	elm_win_resize_object_add(ad->win, ad->conform);
 	evas_object_show(ad->conform);
 
+	/* Box */
+	ad->box = elm_box_add(ad->conform);
+	evas_object_size_hint_weight_set(ad->box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_show(ad->box);
+	elm_object_content_set(ad->conform, ad->box);
+
 	/* Label */
 	/* Create an actual view of the base gui.
 	   Modify this part to change the view. */
-	ad->label = elm_label_add(ad->conform);
+	ad->label = elm_label_add(ad->box);
 	elm_object_text_set(ad->label, "<align=center><font_size=50>Hello Tizen</font/></align>");
 	elm_object_style_set(ad->label, "marker");
 	evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	elm_object_content_set(ad->conform, ad->label);
+//	elm_object_content_set(ad->conform, ad->label);
+	evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_size_hint_min_set(ad->label, 100, 100);
+	evas_object_show(ad->label);
+	elm_box_pack_end(ad->box, ad->label);
 
 	/* Show window after base gui is set up */
 	evas_object_show(ad->win);
