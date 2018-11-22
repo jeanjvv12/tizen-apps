@@ -72,6 +72,31 @@ create_base_gui(appdata_s *ad)
 
 	/* Show window after base gui is set up */
 	evas_object_show(ad->win);
+
+	/* List */
+	/* Create the list
+	 * Set the list size
+	 * Add an item to the list
+	 * Show and add to box */
+	ad->list = elm_list_add(ad->box);
+	evas_object_size_hint_weight_set(ad->list, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(ad->list, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	int i;
+	for (i = 0; i < 4; i++) {
+		char tmp[8];
+		snprintf(tmp, sizeof(tmp), "Item %d", i = 1);
+		elm_list_item_append(ad->list, tmp, NULL, NULL, NULL, NULL);
+	}
+	evas_object_show(ad->list);
+	elm_box_pack_end(ad->box, ad->list);
+
+	/* Button */
+	ad->button = elm_button_add(ad->box);
+	evas_object_size_hint_align_set(ad->button, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	elm_object_text_set(ad->button, "Next");
+	evas_object_show(ad->button);
+	elm_box_pack_end(ad->box, ad->button);
+
 }
 
 static bool
