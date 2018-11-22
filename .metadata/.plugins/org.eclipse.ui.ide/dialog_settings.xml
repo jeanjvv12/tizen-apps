@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+		<item value="/home/m.kubsik/data-viv-win/bixby2-client/tizen-tools/BixbySettingsFridge"/>
+	</list>
+	<list key="installedFeatures">
+		<item value="org.eclipse.cdt.gdb:9.3.2.201709131603"/>
+		<item value="org.eclipse.cdt:9.3.2.201709131603"/>
+		<item value="org.eclipse.emf.common:2.13.0.v20170609-0707"/>
+		<item value="org.eclipse.emf.ecore:2.13.0.v20170609-0707"/>
+		<item value="org.eclipse.help:2.2.101.v20171009-0410"/>
+		<item value="org.eclipse.linuxtools.rpm.ui.editor.feature:0.4.3.201202152032"/>
+		<item value="org.eclipse.platform:4.7.1.v20171009-0410"/>
+		<item value="org.eclipse.rcp:4.7.1.v20171009-0410"/>
+		<item value="org.tizen.common.feature:2.0.0.201805141139"/>
+		<item value="org.tizen.dynamicanalysis.ide.eplugin.feature:2.1.0.201802070913"/>
+		<item value="org.tizen.dynamicanalysis.ide.web.eplugin.feature:2.1.0.201705150956"/>
+		<item value="org.tizen.efluibuilder.feature:1.0.0.201804161100"/>
+		<item value="org.tizen.nativeappcommon.feature:2.0.0.201803161306"/>
+		<item value="org.tizen.nativecommon.feature:2.0.0.201802070821"/>
+		<item value="org.tizen.nativeplatform.feature:1.0.0.201802070852"/>
+		<item value="org.tizen.ocf.cert.feature:2.0.0.201805151212"/>
+		<item value="org.tizen.ocf.core.feature:2.0.0.201805141117"/>
+		<item value="org.tizen.ocf.ext.feature:2.0.0.201803161325"/>
+		<item value="org.tizen.profiler.feature:1.0.0.201802221118"/>
+		<item value="org.tizen.unittest.feature:2.0.0.201804090443"/>
+		<item value="org.tizen.web.tv.sec.feature:1.0.0.201807181846"/>
+	</list>
+</section>

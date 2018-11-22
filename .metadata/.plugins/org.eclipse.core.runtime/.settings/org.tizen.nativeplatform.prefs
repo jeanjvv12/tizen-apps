@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+git.base.uri=review.tizen.org
+git.list.location=https\://review.tizen.org/git/
+git.list.type=GITWEB
+site.config.name=Tizen-Public
