@@ -1,4 +1,6 @@
 /Debug/
 /SA_Report/
 /crash-info/
-/.sign/
+/.sign/.manifest.tmp
+/.sign/author-signature.xml
+/.sign/signature1.xml

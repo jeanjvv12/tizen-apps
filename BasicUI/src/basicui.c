@@ -7,6 +7,8 @@ typedef struct appdata {
 	Evas_Object *box;
 	Evas_Object *list;
 	Evas_Object *button;
+	Evas_Object *navi;
+	Elm_Object_Item *navi_item;
 } appdata_s;
 
 static void
@@ -21,6 +23,28 @@ win_back_cb(void *data, Evas_Object *obj, void *event_info)
 	appdata_s *ad = data;
 	/* Let window go to hide state. */
 	elm_win_lower(ad->win);
+}
+
+
+static void
+prev_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	Evas_Object *nf = data;
+	elm_naviframe_item_pop(nf);
+}
+
+static void
+next_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	Evas_Object *navi_button2;
+	Evas_Object *nf = data;
+	Elm_Object_Item *nf_it;
+
+	navi_button2 = elm_button_add(nf);
+	elm_object_text_set(navi_button2, "Prev");
+	evas_object_smart_callback_add(navi_button2, "clicked", prev_btn_clicked_cb, nf);
+
+	nf_it = elm_naviframe_item_push(nf, "View with button", NULL, NULL, navi_button2, NULL);
 }
 
 static void
@@ -51,11 +75,20 @@ create_base_gui(appdata_s *ad)
 	elm_win_resize_object_add(ad->win, ad->conform);
 	evas_object_show(ad->conform);
 
+	/* NaviFrame */
+	ad->navi = elm_naviframe_add(ad->conform);
+	evas_object_show(ad->navi);
+	elm_object_content_set(ad->conform, ad->navi);
+
 	/* Box */
-	ad->box = elm_box_add(ad->conform);
+	ad->box = elm_box_add(ad->navi);
 	evas_object_size_hint_weight_set(ad->box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_show(ad->box);
-	elm_object_content_set(ad->conform, ad->box);
+	elm_object_content_set(ad->navi, ad->box);
+
+	/* Push the box to the naviframe as a top item to create the first view.
+	 * Each application view is a separate item in the naviframe, and the top item is always displayed. */
+	ad->navi_item = elm_naviframe_item_push(ad->navi, "View with list", NULL, NULL, ad->box, NULL);
 
 	/* Label */
 	/* Create an actual view of the base gui.
@@ -92,6 +125,7 @@ create_base_gui(appdata_s *ad)
 	evas_object_size_hint_align_set(ad->button, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	elm_object_text_set(ad->button, "Next");
 	evas_object_show(ad->button);
+	evas_object_smart_callback_add(ad->button, "clicked", next_btn_clicked_cb, ad->navi);
 	elm_box_pack_end(ad->box, ad->button);
 
 	/* Show window after base gui is set up */
