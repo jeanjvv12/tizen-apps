@@ -5,6 +5,7 @@ typedef struct appdata {
 	Evas_Object *conform;
 	Evas_Object *box;
 	Evas_Object *nf;
+	Evas_Object *label;
 } appdata_s;
 
 static void
@@ -43,7 +44,7 @@ create_base_gui(appdata_s *ad)
 	   elm_conformant is mandatory for base gui to have proper size
 	   when indicator or virtual keypad is visible. */
 	ad->conform = elm_conformant_add(ad->win);
-	elm_win_indicator_mode_set(ad->win, ELM_WIN_INDICATOR_HIDE);
+	elm_win_indicator_mode_set(ad->win, ELM_WIN_INDICATOR_SHOW);
 	elm_win_indicator_opacity_set(ad->win, ELM_WIN_INDICATOR_OPAQUE);
 	evas_object_size_hint_weight_set(ad->conform, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	elm_win_resize_object_add(ad->win, ad->conform);
@@ -51,9 +52,9 @@ create_base_gui(appdata_s *ad)
 
     /* Naviframe */
     ad->nf = elm_naviframe_add(ad->conform);
-    evas_object_show(ad->nf);
     elm_naviframe_prev_btn_auto_pushed_set(ad->nf, EINA_TRUE);
     elm_object_content_set(ad->conform, ad->nf);
+    evas_object_show(ad->nf);
 
 	/* Box */
 	/* Create an actual view of the base gui.
@@ -63,15 +64,22 @@ create_base_gui(appdata_s *ad)
 //	elm_object_text_set(ad->box, "<align=center>Hello Tizen</align>");
 	evas_object_size_hint_weight_set(ad->box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	elm_object_content_set(ad->nf, ad->box);
+    evas_object_show(ad->box);
+    elm_naviframe_item_push(ad->nf, "Box", NULL, NULL, ad->box, NULL);
 
 	/* Label */
 	/* Create an actual view of the base gui.
-	   Modify this part to change the view.
-	ad->label = elm_label_add(ad->conform);
-	elm_box_horizontal_set(box, EINA_TRUE);
-	elm_object_text_set(ad->label, "<align=center>Hello Tizen</align>");
+	   Modify this part to change the view.*/
+	ad->label = elm_label_add(ad->box);
+	elm_object_text_set(ad->label, "<align=center><font_size=50>Hello Tizen</font/></align>");
+	elm_object_style_set(ad->label, "marker");
 	evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	elm_object_content_set(ad->conform, ad->label);*/
+	elm_object_content_set(ad->box, ad->label);
+	evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_size_hint_min_set(ad->label, 100, 100);
+    evas_object_show(ad->label);
+    elm_box_pack_end(ad->box, ad->label);
+    elm_naviframe_item_push(ad->nf, "label", NULL, NULL, ad->label, NULL);
 
 	/* Show window after base gui is set up */
 	evas_object_show(ad->win);
