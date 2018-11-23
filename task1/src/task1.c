@@ -6,6 +6,7 @@ typedef struct appdata {
 	Evas_Object *box;
 	Evas_Object *nf;
 	Evas_Object *label;
+	Evas_Object *button;
 } appdata_s;
 
 static void
@@ -20,6 +21,30 @@ win_back_cb(void *data, Evas_Object *obj, void *event_info)
 	appdata_s *ad = data;
 	/* Let window go to hide state. */
 	elm_win_lower(ad->win);
+}
+
+static void
+hide_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	Evas_Object *label;
+	Evas_Object *box = data;
+
+	label = elm_label_add(box);
+//	elm_object_text_set(label, "");
+	evas_object_hide(label);
+	elm_box_pack_start(box, label);
+}
+
+static void
+show_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	Evas_Object *label;
+	Evas_Object *box = data;
+
+	label = elm_label_add(box);
+	elm_object_text_set(label, "This is label.");
+	evas_object_show(label);
+	elm_box_pack_start(box, label);
 }
 
 static void
@@ -63,23 +88,43 @@ create_base_gui(appdata_s *ad)
 //	elm_box_horizontal_set(ad->box, EINA_TRUE);
 //	elm_object_text_set(ad->box, "<align=center>Hello Tizen</align>");
 	evas_object_size_hint_weight_set(ad->box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(ad->box, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	elm_object_content_set(ad->nf, ad->box);
     evas_object_show(ad->box);
     elm_naviframe_item_push(ad->nf, "Box", NULL, NULL, ad->box, NULL);
 
 	/* Label */
 	/* Create an actual view of the base gui.
-	   Modify this part to change the view.*/
+	   Modify this part to change the view.
 	ad->label = elm_label_add(ad->box);
 	elm_object_text_set(ad->label, "<align=center><font_size=50>Hello Tizen</font/></align>");
 	elm_object_style_set(ad->label, "marker");
 	evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	elm_object_content_set(ad->box, ad->label);
 	evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
-	evas_object_size_hint_min_set(ad->label, 100, 100);
+//	evas_object_size_hint_min_set(ad->label, 100, 100);
     evas_object_show(ad->label);
-    elm_box_pack_end(ad->box, ad->label);
-    elm_naviframe_item_push(ad->nf, "label", NULL, NULL, ad->label, NULL);
+    elm_box_pack_start(ad->box, ad->label);
+//  elm_naviframe_item_push(ad->nf, "label", NULL, NULL, ad->label, NULL);*/
+
+
+	/* Button show */
+	ad->button = elm_button_add(ad->box);
+	elm_object_text_set(ad->button, "show");
+	evas_object_size_hint_weight_set(ad->button, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(ad->button, EVAS_HINT_FILL, 1);
+	evas_object_show(ad->button);
+	evas_object_smart_callback_add(ad->button, "clicked", show_btn_clicked_cb, ad->box);
+	elm_box_pack_start(ad->box, ad->button);
+
+	/* Button hide */
+	ad->button = elm_button_add(ad->box);
+	elm_object_text_set(ad->button, "hide");
+	evas_object_size_hint_weight_set(ad->button, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(ad->button, EVAS_HINT_FILL, 0);
+	evas_object_show(ad->button);
+	evas_object_smart_callback_add(ad->button, "clicked", hide_btn_clicked_cb, ad->box);
+	elm_box_pack_end(ad->box, ad->button);
 
 	/* Show window after base gui is set up */
 	evas_object_show(ad->win);
