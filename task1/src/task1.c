@@ -3,7 +3,8 @@
 typedef struct appdata {
 	Evas_Object *win;
 	Evas_Object *conform;
-	Evas_Object *label;
+	Evas_Object *box;
+	Evas_Object *nf;
 } appdata_s;
 
 static void
@@ -42,19 +43,35 @@ create_base_gui(appdata_s *ad)
 	   elm_conformant is mandatory for base gui to have proper size
 	   when indicator or virtual keypad is visible. */
 	ad->conform = elm_conformant_add(ad->win);
-	elm_win_indicator_mode_set(ad->win, ELM_WIN_INDICATOR_SHOW);
+	elm_win_indicator_mode_set(ad->win, ELM_WIN_INDICATOR_HIDE);
 	elm_win_indicator_opacity_set(ad->win, ELM_WIN_INDICATOR_OPAQUE);
 	evas_object_size_hint_weight_set(ad->conform, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	elm_win_resize_object_add(ad->win, ad->conform);
 	evas_object_show(ad->conform);
 
-	/* Label */
+    /* Naviframe */
+    ad->nf = elm_naviframe_add(ad->conform);
+    evas_object_show(ad->nf);
+    elm_naviframe_prev_btn_auto_pushed_set(ad->nf, EINA_TRUE);
+    elm_object_content_set(ad->conform, ad->nf);
+
+	/* Box */
 	/* Create an actual view of the base gui.
 	   Modify this part to change the view. */
+	ad->box = elm_box_add(ad->nf);
+//	elm_box_horizontal_set(ad->box, EINA_TRUE);
+//	elm_object_text_set(ad->box, "<align=center>Hello Tizen</align>");
+	evas_object_size_hint_weight_set(ad->box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	elm_object_content_set(ad->nf, ad->box);
+
+	/* Label */
+	/* Create an actual view of the base gui.
+	   Modify this part to change the view.
 	ad->label = elm_label_add(ad->conform);
+	elm_box_horizontal_set(box, EINA_TRUE);
 	elm_object_text_set(ad->label, "<align=center>Hello Tizen</align>");
 	evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	elm_object_content_set(ad->conform, ad->label);
+	elm_object_content_set(ad->conform, ad->label);*/
 
 	/* Show window after base gui is set up */
 	evas_object_show(ad->win);
