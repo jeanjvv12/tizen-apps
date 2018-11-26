@@ -7,6 +7,8 @@ typedef struct appdata {
 	Evas_Object *nf;
 	Evas_Object *label;
 	Evas_Object *button;
+	Evas_Object *icon;
+	Evas_Object *popup;
 } appdata_s;
 
 static void
@@ -27,15 +29,50 @@ static void
 hide_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	appdata_s *ad = data;
-	evas_object_hide(ad->label);
+	evas_object_del(ad->label);
 }
 
 static void
 show_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	appdata_s *ad = data;
+	ad->label = elm_label_add(ad->box);
+	elm_object_text_set(ad->label, "<align=center><font_size=50>Hello Tizen</font/></align>");
+	elm_object_style_set(ad->label, "marker");
+	evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	elm_object_content_set(ad->box, ad->label);
+	evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_size_hint_min_set(ad->label, 100, 100);
 	evas_object_show(ad->label);
+    elm_box_pack_start(ad->box, ad->label);
+}
+void close_popup(void *data, Evas_Object *obj, void *event_info) {
+	appdata_s *ad = data;
+	evas_object_del(ad->popup);
+}
 
+static void
+pop_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	appdata_s *ad = data;
+//	Evas_Object *popup;
+	Evas_Object *button;
+
+	/* Create a popup */
+	ad->popup = elm_popup_add(ad->win);
+
+	elm_object_text_set(ad->popup, "pop up up up");
+
+	/* Add a "Cancel" button to popup */
+	button = elm_button_add(ad->popup);
+	elm_object_style_set(button, "popup");
+	elm_object_text_set(button, "Cancel");
+	elm_object_part_content_set(ad->popup, "button2", button);
+
+	eext_object_event_callback_add(ad->popup, EEXT_CALLBACK_BACK, close_popup, NULL);
+	evas_object_smart_callback_add(button, "clicked", close_popup, ad);
+
+	evas_object_show(ad->popup);
 }
 
 static void
@@ -66,41 +103,44 @@ create_base_gui(appdata_s *ad)
 	elm_win_resize_object_add(ad->win, ad->conform);
 	evas_object_show(ad->conform);
 
-    /* Naviframe */
+    /* Naviframe
     ad->nf = elm_naviframe_add(ad->conform);
     elm_naviframe_prev_btn_auto_pushed_set(ad->nf, EINA_TRUE);
     elm_object_content_set(ad->conform, ad->nf);
-    evas_object_show(ad->nf);
+    evas_object_show(ad->nf);*/
+
+	/* Show window after base gui is set up */
+	evas_object_show(ad->win);
 
 	/* Box */
 	/* Create an actual view of the base gui.
 	   Modify this part to change the view. */
-	ad->box = elm_box_add(ad->nf);
+	ad->box = elm_box_add(ad->conform);
 //	elm_box_horizontal_set(ad->box, EINA_TRUE);
 //	elm_object_text_set(ad->box, "<align=center>Hello Tizen</align>");
 	evas_object_size_hint_weight_set(ad->box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(ad->box, EVAS_HINT_FILL, EVAS_HINT_FILL);
-	elm_object_content_set(ad->nf, ad->box);
+	elm_object_content_set(ad->conform, ad->box);
     evas_object_show(ad->box);
-    elm_naviframe_item_push(ad->nf, "Box", NULL, NULL, ad->box, NULL);
+    elm_naviframe_item_push(ad->conform, "Box", NULL, NULL, ad->box, NULL);
 
 	/* Label */
 	/* Create an actual view of the base gui.
-	   Modify this part to change the view.*/
+	   Modify this part to change the view.
 	ad->label = elm_label_add(ad->box);
 	elm_object_text_set(ad->label, "<align=center><font_size=50>Hello Tizen</font/></align>");
 	elm_object_style_set(ad->label, "marker");
 	evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	elm_object_content_set(ad->box, ad->label);
 	evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
-//	evas_object_size_hint_min_set(ad->label, 100, 100);
-//  evas_object_show(ad->label);
-    elm_box_pack_start(ad->box, ad->label);
+	evas_object_size_hint_min_set(ad->label, 100, 100);
+	evas_object_show(ad->label);
+    elm_box_pack_start(ad->box, ad->label);*/
 //  elm_naviframe_item_push(ad->nf, "label", NULL, NULL, ad->label, NULL);
-
 
 	/* Button show */
 	ad->button = elm_button_add(ad->box);
+//	elm_object_style_set(ad->button, "circle");
 	elm_object_text_set(ad->button, "show");
 	evas_object_size_hint_weight_set(ad->button, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(ad->button, EVAS_HINT_FILL, EVAS_HINT_FILL);
@@ -110,6 +150,7 @@ create_base_gui(appdata_s *ad)
 
 	/* Button hide */
 	ad->button = elm_button_add(ad->box);
+//	elm_object_style_set(ad->button, "circle");
 	elm_object_text_set(ad->button, "hide");
 	evas_object_size_hint_weight_set(ad->button, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(ad->button, EVAS_HINT_FILL, EVAS_HINT_FILL);
@@ -117,8 +158,21 @@ create_base_gui(appdata_s *ad)
 	evas_object_smart_callback_add(ad->button, "clicked", hide_btn_clicked_cb, ad->box);
 	elm_box_pack_end(ad->box, ad->button);
 
-	/* Show window after base gui is set up */
-	evas_object_show(ad->win);
+	/* Button pop-up */
+	ad->button = elm_button_add(ad->box);
+//	elm_object_style_set(ad->button, "circle");
+	elm_object_text_set(ad->button, "popup");
+
+	ad->icon = elm_icon_add(ad->button);
+	elm_icon_standard_set(ad->icon, "chat");
+//	elm_image_file_set(ad->icon, "/tmp/Home.edj", "elm/icon/Home/default");
+	elm_object_part_content_set(ad->button, "icon", ad->icon);
+
+	evas_object_size_hint_weight_set(ad->button, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(ad->button, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_show(ad->button);
+	evas_object_smart_callback_add(ad->button, "clicked", pop_btn_clicked_cb, ad->box);
+	elm_box_pack_end(ad->box, ad->button);
 }
 
 static bool
