@@ -10,4 +10,10 @@
 /BasicUI2/.sign/.manifest.tmp
 /BasicUI2/.sign/author-signature.xml
 /BasicUI2/.sign/signature1.xml
-
+/task1/
+/task2/Debug/
+/task2/SA_Report/
+/task2/crash-info/
+/task2/.sign/.manifest.tmp
+/task2/.sign/author-signature.xml
+/task2/.sign/signature1.xml
