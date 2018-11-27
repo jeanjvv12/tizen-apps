@@ -1,10 +1,13 @@
-#include "task1.h"
+#include "basicui2.h"
 
 typedef struct appdata {
 	Evas_Object *win;
 	Evas_Object *conform;
-	Evas_Object *box;
 	Evas_Object *nf;
+	Evas_Object *box;
+	Evas_Object *button_pop;
+	Evas_Object *popup;
+
 } appdata_s;
 
 static void
@@ -19,6 +22,48 @@ win_back_cb(void *data, Evas_Object *obj, void *event_info)
 	appdata_s *ad = data;
 	/* Let window go to hide state. */
 	elm_win_lower(ad->win);
+}
+
+void
+dismissed_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	appdata_s *ad = data;
+	evas_object_del(ad->popup);
+}
+
+void
+show_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	/* Structure */
+	Evas_Object *popup;
+	Evas_Object *box = data;
+	Evas_Object *button1;
+	Evas_Object *button2;
+
+	/* Create a popup */
+		popup = elm_popup_add(box);
+		elm_popup_align_set(popup, ELM_NOTIFY_ALIGN_FILL, 1.0);
+		evas_object_size_hint_weight_set(popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+		elm_object_part_text_set(popup, "title,text", "Popup Title");
+		elm_object_text_set(popup, "Very important shit");
+		evas_object_show(popup);
+
+	//	elm_object_content_set(ad->popup, ad->content);
+
+		button1 = elm_button_add(popup);
+		elm_object_style_set(button1, "popup");
+		elm_object_text_set(button1, "OK");
+
+		button2 = elm_button_add(popup);
+		elm_object_text_set(button2, "Cancel");
+
+		elm_object_part_content_set(popup, "button1", button1);
+		elm_object_part_content_set(popup, "button2", button2);
+		evas_object_smart_callback_add(button2, "clicked", dismissed_cb, box);
+	//	eext_object_event_callback_add(data->popup, EEXT_CALLBACK_BACK, dismissed_cb, NULL);
+	//	evas_object_smart_callback_add(button, "clicked", close_popup, ad);
+		evas_object_show(button1);
+		evas_object_show(button2);
 }
 
 static void
@@ -43,35 +88,32 @@ create_base_gui(appdata_s *ad)
 	   elm_conformant is mandatory for base gui to have proper size
 	   when indicator or virtual keypad is visible. */
 	ad->conform = elm_conformant_add(ad->win);
-	elm_win_indicator_mode_set(ad->win, ELM_WIN_INDICATOR_HIDE);
+	elm_win_indicator_mode_set(ad->win, ELM_WIN_INDICATOR_SHOW);
 	elm_win_indicator_opacity_set(ad->win, ELM_WIN_INDICATOR_OPAQUE);
 	evas_object_size_hint_weight_set(ad->conform, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	elm_win_resize_object_add(ad->win, ad->conform);
 	evas_object_show(ad->conform);
 
-    /* Naviframe */
-    ad->nf = elm_naviframe_add(ad->conform);
-    evas_object_show(ad->nf);
-    elm_naviframe_prev_btn_auto_pushed_set(ad->nf, EINA_TRUE);
-    elm_object_content_set(ad->conform, ad->nf);
-
 	/* Box */
 	/* Create an actual view of the base gui.
 	   Modify this part to change the view. */
-	ad->box = elm_box_add(ad->nf);
-//	elm_box_horizontal_set(ad->box, EINA_TRUE);
-//	elm_object_text_set(ad->box, "<align=center>Hello Tizen</align>");
+	ad->box = elm_box_add(ad->conform);
+	elm_box_horizontal_set(ad->box, EINA_TRUE);
 	evas_object_size_hint_weight_set(ad->box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	elm_object_content_set(ad->nf, ad->box);
+	evas_object_size_hint_align_set(ad->box, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	elm_object_content_set(ad->conform, ad->box);
+    evas_object_show(ad->box);
+	elm_naviframe_item_push(ad->conform, "Box", NULL, NULL, ad->box, NULL);
 
-	/* Label */
-	/* Create an actual view of the base gui.
-	   Modify this part to change the view.
-	ad->label = elm_label_add(ad->conform);
-	elm_box_horizontal_set(box, EINA_TRUE);
-	elm_object_text_set(ad->label, "<align=center>Hello Tizen</align>");
-	evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	elm_object_content_set(ad->conform, ad->label);*/
+	/* Create a button_pop */
+	ad->button_pop = elm_button_add(ad->box);
+	elm_object_style_set(ad->button_pop, "circle");
+	elm_object_text_set(ad->button_pop, "show");
+	evas_object_size_hint_weight_set(ad->button_pop, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_show(ad->button_pop);
+	evas_object_smart_callback_add(ad->button_pop, "clicked", show_btn_clicked_cb, ad->box);
+	elm_box_pack_end(ad->box, ad->button_pop);
+
 
 	/* Show window after base gui is set up */
 	evas_object_show(ad->win);

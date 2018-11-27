@@ -1,9 +1,9 @@
-APPNAME = task1
+APPNAME = basicui2
 
 type = app
 profile = mobile-4.0
 
-USER_SRCS = src/task1.c
+USER_SRCS = src/basicui2.c
 USER_DEFS =
 USER_INC_DIRS = inc
 USER_OBJS =

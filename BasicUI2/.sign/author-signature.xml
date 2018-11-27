@@ -2,17 +2,17 @@
 <SignedInfo>
 <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"></CanonicalizationMethod>
 <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"></SignatureMethod>
-<Reference URI="bin%2Ftask1">
+<Reference URI="bin%2Fbasicui2">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>ZlNvFxRUXzN4qgjPVXHNjlDZFRvzB1Scno68y7Rq1B0=</DigestValue>
+<DigestValue>4fIXlCEvrzJz2QEyJ0iGD30NEPpm16XP5WPexQk70Sk=</DigestValue>
 </Reference>
-<Reference URI="shared%2Fres%2Ftask1.png">
+<Reference URI="shared%2Fres%2Fbasicui2.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
 <DigestValue>1d0oEZHqPn+QzNzGIHwj9ODby6x9ggFs9uOsav6jPNs=</DigestValue>
 </Reference>
 <Reference URI="tizen-manifest.xml">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>Y30qDs8+8IwljwnPY/y9KF1jSWLdaahajflNbBcUE5A=</DigestValue>
+<DigestValue>mf8S8GKV7PAFZXdBsHUKDVpA6HD52VL9mMSdzgTIje0=</DigestValue>
 </Reference>
 <Reference URI="#prop">
 <Transforms>
@@ -23,9 +23,9 @@
 </Reference>
 </SignedInfo>
 <SignatureValue>
-eGUztiYkUtebhqmA55nyNtA/ll8NGbRF4GE2kDBpZo8FkTsC2AXRWQl/Pp3xp73+K+oMafau6q4h
-p3bYTZBbwYst0fYqhYUlvVthCb982vmrpNQli7+cS6fjyA+AOphPN3gWSlARbcRHkvaSHFRAHt5C
-TttRDoGBXVqenQfI1tQ=
+Sdl6d70dNGMa84ZCD2lCzaCeb63rfRFlVqhabpLq1Ao05ZaqCAxoFEsUEOE8UkEnSCdeuNpjDvGL
+AMynSGRgmu/dYViuXi+BRcGP1oEirh1GQUDwzztCdj4FeQsxkEItlSLqxmDJL/cWh8dzeil48e92
+LN/42g/L4hrd+FnRE7E=
 </SignatureValue>
 <KeyInfo>
 <X509Data>
