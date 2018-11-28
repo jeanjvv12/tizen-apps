@@ -11,9 +11,9 @@
 /BasicUI2/.sign/author-signature.xml
 /BasicUI2/.sign/signature1.xml
 /task1/
-/task2/Debug/
-/task2/SA_Report/
-/task2/crash-info/
-/task2/.sign/.manifest.tmp
-/task2/.sign/author-signature.xml
-/task2/.sign/signature1.xml
+/task3/Debug/*
+/task3/SA_Report/
+/task3/crash-info/
+/task3/.sign/.manifest.tmp
+/task3/.sign/author-signature.xml
+/task3/.sign/signature1.xml

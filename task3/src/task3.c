@@ -3,7 +3,10 @@
 typedef struct appdata {
 	Evas_Object *win;
 	Evas_Object *conf;
+	Evas_Object *nf;
+	Evas_Object *box;
 	Evas_Object *label;
+	Evas_Object *radio;
 } appdata_s;
 
 static void
@@ -48,13 +51,28 @@ create_base_gui(appdata_s *ad)
 	elm_win_resize_object_add(ad->win, ad->conf);
 	evas_object_show(ad->conf);
 
+	/* NaviFrame */
+	ad->nf = elm_naviframe_add(ad->conf);
+	evas_object_show(ad->nf);
+	elm_object_content_set(ad->conf, ad->nf);
+
+	/* Box */
+	ad->box = elm_box_add(ad->nf);
+	evas_object_show(ad->box);
+	elm_naviframe_item_push(ad->nf, "Radio", NULL, NULL, ad->box, NULL);
+
 	/* Label */
 	/* Create an actual view of the base gui.
 	   Modify this part to change the view. */
-	ad->label = elm_label_add(ad->conf);
+	ad->label = elm_label_add(ad->box);
 	elm_object_text_set(ad->label, "<align=center>Hello Tizen</align>");
 	evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	elm_object_content_set(ad->conf, ad->label);
+	elm_object_content_set(ad->box, ad->label);
+
+	/* Radio */
+	ad->radio = elm_radio_add(ad->box);
+	elm_object_text_set(ad->radio, "option 1");
+	evas_object_show(ad->radio);
 
 	/* Show window after base gui is set up */
 	evas_object_show(ad->win);
