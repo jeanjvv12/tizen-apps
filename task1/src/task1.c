@@ -1,4 +1,6 @@
 #include "task1.h"
+#include <dlog.h>
+
 
 typedef struct appdata {
 	Evas_Object *win;
@@ -28,6 +30,7 @@ win_back_cb(void *data, Evas_Object *obj, void *event_info)
 static void
 hide_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
+	dlog_print(DLOG_DEBUG, "duda", "button_clicked_hide");
 	appdata_s *ad = data;
 	evas_object_del(ad->label);
 }
@@ -35,16 +38,9 @@ hide_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 static void
 show_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
+	dlog_print(DLOG_DEBUG, "duda", "button_clicked_show");
 	appdata_s *ad = data;
-	ad->label = elm_label_add(ad->box);
-	elm_object_text_set(ad->label, "<align=center><font_size=50>Hello Tizen</font/></align>");
-	elm_object_style_set(ad->label, "marker");
-	evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	elm_object_content_set(ad->box, ad->label);
-	evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
-	evas_object_size_hint_min_set(ad->label, 100, 100);
-	evas_object_show(ad->label);
-    elm_box_pack_start(ad->box, ad->label);
+	evas_object_hide(ad->label);
 }
 void close_popup(void *data, Evas_Object *obj, void *event_info) {
 	appdata_s *ad = data;
@@ -102,6 +98,7 @@ create_base_gui(appdata_s *ad)
 	evas_object_size_hint_weight_set(ad->conform, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	elm_win_resize_object_add(ad->win, ad->conform);
 	evas_object_show(ad->conform);
+	dlog_print(DLOG_DEBUG, "duda", "show_conformant");
 
     /* Naviframe
     ad->nf = elm_naviframe_add(ad->conform);
@@ -122,11 +119,12 @@ create_base_gui(appdata_s *ad)
 	evas_object_size_hint_align_set(ad->box, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	elm_object_content_set(ad->conform, ad->box);
     evas_object_show(ad->box);
-    elm_naviframe_item_push(ad->conform, "Box", NULL, NULL, ad->box, NULL);
+	dlog_print(DLOG_DEBUG, "duda", "show_box");
+ //   elm_naviframe_item_push(ad->conform, "Box", NULL, NULL, ad->box, NULL);
 
 	/* Label */
 	/* Create an actual view of the base gui.
-	   Modify this part to change the view.
+	   Modify this part to change the view.*/
 	ad->label = elm_label_add(ad->box);
 	elm_object_text_set(ad->label, "<align=center><font_size=50>Hello Tizen</font/></align>");
 	elm_object_style_set(ad->label, "marker");
@@ -135,7 +133,8 @@ create_base_gui(appdata_s *ad)
 	evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_size_hint_min_set(ad->label, 100, 100);
 	evas_object_show(ad->label);
-    elm_box_pack_start(ad->box, ad->label);*/
+	dlog_print(DLOG_DEBUG, "duda", "show_label");
+    elm_box_pack_start(ad->box, ad->label);
 //  elm_naviframe_item_push(ad->nf, "label", NULL, NULL, ad->label, NULL);
 
 	/* Button show */
@@ -145,6 +144,7 @@ create_base_gui(appdata_s *ad)
 	evas_object_size_hint_weight_set(ad->button, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(ad->button, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_show(ad->button);
+	dlog_print(DLOG_DEBUG, "duda", "button_show");
 	evas_object_smart_callback_add(ad->button, "clicked", show_btn_clicked_cb, ad->box);
 	elm_box_pack_end(ad->box, ad->button);
 
@@ -155,7 +155,9 @@ create_base_gui(appdata_s *ad)
 	evas_object_size_hint_weight_set(ad->button, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(ad->button, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_show(ad->button);
+	dlog_print(DLOG_DEBUG, "duda", "button_hide");
 	evas_object_smart_callback_add(ad->button, "clicked", hide_btn_clicked_cb, ad->box);
+
 	elm_box_pack_end(ad->box, ad->button);
 
 	/* Button pop-up */
@@ -184,6 +186,7 @@ app_create(void *data)
 		If this function returns false, the application is terminated */
 	appdata_s *ad = data;
 
+	dlog_print(DLOG_DEBUG, "duda", "##################################");
 	create_base_gui(ad);
 
 	return true;
