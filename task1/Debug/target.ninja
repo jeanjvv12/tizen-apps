@@ -1,0 +1,5 @@
+build main_build: phony task1
+build all: phony main_build
+default all
+edje-cc-dep-options = -deps $out.d
+binaryName = task1

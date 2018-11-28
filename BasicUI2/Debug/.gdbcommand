@@ -1,0 +1,5 @@
+set sysroot /home/m.kubsik/tizen-studio/tools/smart-build-interface/../../platforms/tizen-4.0/mobile/rootstraps/mobile-4.0-emulator.core
+set debug-file-directory /home/m.kubsik/tizen-studio/tools/smart-build-interface/../../platforms/tizen-4.0/mobile/rootstraps/mobile-4.0-emulator.core/usr/lib/debug
+set solib-search-path /home/m.kubsik/workspace/BasicUI2/Debug
+dir /home/m.kubsik/tizen-studio/tools/smart-build-interface/../../platforms/tizen-4.0/mobile/rootstraps/mobile-4.0-emulator.core/usr/src/debug
+sharedlibrary
