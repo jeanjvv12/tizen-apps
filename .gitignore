@@ -10,4 +10,8 @@ task3/Debug/
 task3/SA_Report/
 task3/crash-info/
 task3/.sign/
-task1/
+task1/Debug/
+task1/SA_Report/
+task1/crash-info/
+task1/.sign/
+*.orig
