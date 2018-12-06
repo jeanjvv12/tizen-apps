@@ -25,9 +25,8 @@ win_back_cb(void *data, Evas_Object *obj, void *event_info)
 }
 
 void
-cancel_cb(void *data, Evas_Object *obj, void *event_info)
+cancel_cb(appdata_s *ad, Evas_Object *obj, void *event_info)
 {
-	appdata_s *ad = data;
 	dlog_print(DLOG_DEBUG, LOG_TAG, "after reading ad pointer");
 	evas_object_hide(ad->popup);
 	dlog_print(DLOG_DEBUG, LOG_TAG, "after hideing popup");
@@ -39,41 +38,6 @@ show_cb(appdata_s *ad, Evas_Object *obj, void *event_info)
 	dlog_print(DLOG_DEBUG, LOG_TAG, "after reading ad pointer");
 	evas_object_show(ad->popup);
 	dlog_print(DLOG_DEBUG, LOG_TAG, "after showing popup");
-}
-
-void
-show_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
-{
-	/* Structure */
-	Evas_Object *popup;
-	Evas_Object *box = data;
-	Evas_Object *button1;
-	Evas_Object *button2;
-
-	/* Create a popup */
-		popup = elm_popup_add(box);
-		elm_popup_align_set(popup, ELM_NOTIFY_ALIGN_FILL, 1.0);
-		evas_object_size_hint_weight_set(popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-		elm_object_part_text_set(popup, "title,text", "Popup Title");
-		elm_object_text_set(popup, "Very important shit");
-		evas_object_show(popup);
-
-	//	elm_object_content_set(ad->popup, ad->content);
-
-		button1 = elm_button_add(popup);
-		elm_object_style_set(button1, "popup");
-		elm_object_text_set(button1, "OK");
-
-		button2 = elm_button_add(popup);
-		elm_object_text_set(button2, "Cancel");
-
-		elm_object_part_content_set(popup, "button1", button1);
-		elm_object_part_content_set(popup, "button2", button2);
-		evas_object_smart_callback_add(button2, "clicked", cancel_cb, box);
-	//	eext_object_event_callback_add(data->popup, EEXT_CALLBACK_BACK, dismissed_cb, NULL);
-	//	evas_object_smart_callback_add(button, "clicked", close_popup, ad);
-		evas_object_show(button1);
-		evas_object_show(button2);
 }
 
 static void
@@ -122,7 +86,7 @@ create_base_gui(appdata_s *ad)
 	elm_object_text_set(ad->button_pop, "show");
 //	evas_object_size_hint_weight_set(ad->button_pop, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_show(ad->button_pop);
-	evas_object_smart_callback_add(ad->button_pop, "clicked", show_cb, ad->box);
+	evas_object_smart_callback_add(ad->button_pop, "clicked", show_cb, ad);
 	elm_box_pack_end(ad->box, ad->button_pop);
 
 
@@ -148,7 +112,8 @@ create_base_gui(appdata_s *ad)
 
 		elm_object_part_content_set(ad->popup, "button1", button_OK);
 		elm_object_part_content_set(ad->popup, "button2", button_Cancel);
-		evas_object_smart_callback_add(button_Cancel, "clicked", cancel_cb, ad->box);
+		evas_object_smart_callback_add(button_OK, "clicked", cancel_cb, ad);
+		evas_object_smart_callback_add(button_Cancel, "clicked", cancel_cb, ad);
 		evas_object_show(button_Cancel);
 		evas_object_show(button_OK);
 
