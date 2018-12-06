@@ -6,9 +6,10 @@ typedef struct appdata {
 	Evas_Object *nf;
 	Evas_Object *box;
 	Evas_Object *label;
-	Evas_Object *radio_1;
-	Evas_Object *radio_2;
-	Evas_Object *radio_3;
+	Evas_Object *radio;
+	Evas_Object *group;
+//	Evas_Object *radio_2;
+//	Evas_Object *radio_3;
 } appdata_s;
 
 static void
@@ -65,26 +66,44 @@ create_base_gui(appdata_s *ad)
 
 	/* Label */
 	/* Create an actual view of the base gui.
-	   Modify this part to change the view.
+	   Modify this part to change the view.*/
 	ad->label = elm_label_add(ad->box);
 	elm_object_text_set(ad->label, "<align=center>Hello Tizen</align>");
 	evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	elm_object_content_set(ad->box, ad->label);*/
+//	elm_object_content_set(ad->box, ad->label);
+	evas_object_show(ad->label);
 
 	/* Radio */
-	ad->radio_1 = elm_radio_add(ad->box);
-	elm_object_text_set(ad->radio_1, "option 1");
-	elm_radio_state_value_set(ad->radio_1, 1);
-	evas_object_show(ad->radio_1);
-	elm_box_pack_end(ad->box, ad->radio_1);
+	/* Add a radio */
+	ad->radio = elm_radio_add(ad->box);
+	/* Configure the radio */
+	elm_object_text_set(ad->radio, "option 1");
+	elm_radio_state_value_set(ad->radio, 1);
+	evas_object_show(ad->radio);
+	elm_box_pack_end(ad->box, ad->radio);
 
+	ad->group = ad->radio;
 
-	ad->radio_2 = elm_radio_add(ad->box);
-	elm_object_text_set(ad->radio_2, "option 2");
-	evas_object_show(ad->radio_2);
-	ad->radio_3 = elm_radio_add(ad->box);
-	elm_object_text_set(ad->radio_3, "option 3");
-	evas_object_show(ad->radio_3);
+	/* Radio 2 */
+	ad->radio = elm_radio_add(ad->box);
+	elm_object_text_set(ad->radio, "option 2");
+	elm_radio_state_value_set(ad->radio, 2);
+	evas_object_show(ad->radio);
+	elm_box_pack_end(ad->box, ad->radio);
+	/* Add to the group */
+	elm_radio_group_add(ad->radio, ad->group);
+
+	/* Radio 3 */
+	ad->radio = elm_radio_add(ad->box);
+	elm_object_text_set(ad->radio, "option 3");
+	elm_radio_state_value_set(ad->radio, 3);
+	evas_object_show(ad->radio);
+	elm_box_pack_end(ad->box, ad->radio);
+	/* Add to the group */
+	elm_radio_group_add(ad->radio, ad->group);
+
+	/* Set 1 of the radio components as selected */
+	elm_radio_value_set(ad->group, 1);
 
 	/* Show window after base gui is set up */
 	evas_object_show(ad->win);

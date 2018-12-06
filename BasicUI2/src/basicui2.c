@@ -25,10 +25,20 @@ win_back_cb(void *data, Evas_Object *obj, void *event_info)
 }
 
 void
-dismissed_cb(void *data, Evas_Object *obj, void *event_info)
+cancel_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	appdata_s *ad = data;
-	evas_object_del(ad->popup);
+	dlog_print(DLOG_DEBUG, LOG_TAG, "after reading ad pointer");
+	evas_object_hide(ad->popup);
+	dlog_print(DLOG_DEBUG, LOG_TAG, "after hideing popup");
+}
+
+void
+show_cb(appdata_s *ad, Evas_Object *obj, void *event_info)
+{
+	dlog_print(DLOG_DEBUG, LOG_TAG, "after reading ad pointer");
+	evas_object_show(ad->popup);
+	dlog_print(DLOG_DEBUG, LOG_TAG, "after showing popup");
 }
 
 void
@@ -59,7 +69,7 @@ show_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 
 		elm_object_part_content_set(popup, "button1", button1);
 		elm_object_part_content_set(popup, "button2", button2);
-		evas_object_smart_callback_add(button2, "clicked", dismissed_cb, box);
+		evas_object_smart_callback_add(button2, "clicked", cancel_cb, box);
 	//	eext_object_event_callback_add(data->popup, EEXT_CALLBACK_BACK, dismissed_cb, NULL);
 	//	evas_object_smart_callback_add(button, "clicked", close_popup, ad);
 		evas_object_show(button1);
@@ -98,22 +108,49 @@ create_base_gui(appdata_s *ad)
 	/* Create an actual view of the base gui.
 	   Modify this part to change the view. */
 	ad->box = elm_box_add(ad->conform);
-	elm_box_horizontal_set(ad->box, EINA_TRUE);
-	evas_object_size_hint_weight_set(ad->box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	evas_object_size_hint_align_set(ad->box, EVAS_HINT_FILL, EVAS_HINT_FILL);
+//	elm_box_horizontal_set(ad->box, EINA_TRUE);
+//	evas_object_size_hint_weight_set(ad->box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+//	evas_object_size_hint_align_set(ad->box, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	elm_object_content_set(ad->conform, ad->box);
     evas_object_show(ad->box);
-	elm_naviframe_item_push(ad->conform, "Box", NULL, NULL, ad->box, NULL);
+    // dont have here navi frame
+    //	elm_naviframe_item_push(ad->conform, "Box", NULL, NULL, ad->box, NULL);
 
 	/* Create a button_pop */
 	ad->button_pop = elm_button_add(ad->box);
 	elm_object_style_set(ad->button_pop, "circle");
 	elm_object_text_set(ad->button_pop, "show");
-	evas_object_size_hint_weight_set(ad->button_pop, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+//	evas_object_size_hint_weight_set(ad->button_pop, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_show(ad->button_pop);
-	evas_object_smart_callback_add(ad->button_pop, "clicked", show_btn_clicked_cb, ad->box);
+	evas_object_smart_callback_add(ad->button_pop, "clicked", show_cb, ad->box);
 	elm_box_pack_end(ad->box, ad->button_pop);
 
+
+	/* Create a popup */
+		ad->popup = elm_popup_add(ad->box);
+		elm_popup_align_set(ad->popup, ELM_NOTIFY_ALIGN_FILL, 1.0);
+		evas_object_size_hint_weight_set(ad->popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+		elm_object_part_text_set(ad->popup, "title,text", "Popup Title");
+		elm_object_text_set(ad->popup, "Very important shit");
+//		evas_object_show(ad->popup);
+
+
+		Evas_Object *button_OK;
+		Evas_Object *button_Cancel;
+
+		button_OK = elm_button_add(ad->popup);
+		elm_object_style_set(button_OK, "popup");
+		elm_object_text_set(button_OK, "OK");
+		evas_object_show(button_OK);
+
+		button_Cancel = elm_button_add(ad->popup);
+		elm_object_text_set(button_Cancel, "Cancel");
+
+		elm_object_part_content_set(ad->popup, "button1", button_OK);
+		elm_object_part_content_set(ad->popup, "button2", button_Cancel);
+		evas_object_smart_callback_add(button_Cancel, "clicked", cancel_cb, ad->box);
+		evas_object_show(button_Cancel);
+		evas_object_show(button_OK);
 
 	/* Show window after base gui is set up */
 	evas_object_show(ad->win);
