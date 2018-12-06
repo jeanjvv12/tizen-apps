@@ -3,8 +3,8 @@
 typedef struct appdata {
 	Evas_Object *win;
 	Evas_Object *conform;
-	Evas_Object *box;
 	Evas_Object *nf;
+	Evas_Object *box;
 	Evas_Object *label;
 	Evas_Object *button;
 	Evas_Object *icon;
@@ -26,16 +26,14 @@ win_back_cb(void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-hide_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+hide_btn_clicked_cb(appdata_s *ad, Evas_Object *obj, void *event_info)
 {
-	appdata_s *ad = data;
 	evas_object_del(ad->label);
 }
 
 static void
-show_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+show_btn_clicked_cb(appdata_s *ad, Evas_Object *obj, void *event_info)
 {
-	appdata_s *ad = data;
 	ad->label = elm_label_add(ad->box);
 	elm_object_text_set(ad->label, "<align=center><font_size=50>Hello Tizen</font/></align>");
 	elm_object_style_set(ad->label, "marker");
@@ -46,16 +44,15 @@ show_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 	evas_object_show(ad->label);
     elm_box_pack_start(ad->box, ad->label);
 }
-void close_popup(void *data, Evas_Object *obj, void *event_info) {
-	appdata_s *ad = data;
+
+void close_popup(appdata_s *ad, Evas_Object *obj, void *event_info) {
 	evas_object_del(ad->popup);
 }
 
 static void
-pop_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+pop_btn_clicked_cb(appdata_s *ad, Evas_Object *obj, void *event_info)
 {
-	appdata_s *ad = data;
-//	Evas_Object *popup;
+	Evas_Object *popup;
 	Evas_Object *button;
 
 	/* Create a popup */
@@ -124,20 +121,6 @@ create_base_gui(appdata_s *ad)
     evas_object_show(ad->box);
     elm_naviframe_item_push(ad->conform, "Box", NULL, NULL, ad->box, NULL);
 
-	/* Label */
-	/* Create an actual view of the base gui.
-	   Modify this part to change the view.
-	ad->label = elm_label_add(ad->box);
-	elm_object_text_set(ad->label, "<align=center><font_size=50>Hello Tizen</font/></align>");
-	elm_object_style_set(ad->label, "marker");
-	evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	elm_object_content_set(ad->box, ad->label);
-	evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
-	evas_object_size_hint_min_set(ad->label, 100, 100);
-	evas_object_show(ad->label);
-    elm_box_pack_start(ad->box, ad->label);*/
-//  elm_naviframe_item_push(ad->nf, "label", NULL, NULL, ad->label, NULL);
-
 	/* Button show */
 	ad->button = elm_button_add(ad->box);
 //	elm_object_style_set(ad->button, "circle");
@@ -145,7 +128,7 @@ create_base_gui(appdata_s *ad)
 	evas_object_size_hint_weight_set(ad->button, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(ad->button, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_show(ad->button);
-	evas_object_smart_callback_add(ad->button, "clicked", show_btn_clicked_cb, ad->box);
+	evas_object_smart_callback_add(ad->button, "clicked", show_btn_clicked_cb, ad);
 	elm_box_pack_end(ad->box, ad->button);
 
 	/* Button hide */
@@ -155,7 +138,7 @@ create_base_gui(appdata_s *ad)
 	evas_object_size_hint_weight_set(ad->button, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(ad->button, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_show(ad->button);
-	evas_object_smart_callback_add(ad->button, "clicked", hide_btn_clicked_cb, ad->box);
+	evas_object_smart_callback_add(ad->button, "clicked", hide_btn_clicked_cb, ad);
 	elm_box_pack_end(ad->box, ad->button);
 
 	/* Button pop-up */
@@ -171,7 +154,7 @@ create_base_gui(appdata_s *ad)
 	evas_object_size_hint_weight_set(ad->button, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(ad->button, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_show(ad->button);
-	evas_object_smart_callback_add(ad->button, "clicked", pop_btn_clicked_cb, ad->box);
+	evas_object_smart_callback_add(ad->button, "clicked", pop_btn_clicked_cb, ad);
 	elm_box_pack_end(ad->box, ad->button);
 }
 
